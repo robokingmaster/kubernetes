@@ -1,56 +1,65 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blue-app
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-green
+  name: deployment-blue
+  namespace: blue-app
 spec:
   selector:
     matchLabels:
-      app: green
-  replicas: 2
+      app: blue
+  replicas: 3
   template:
     metadata:
       labels:
-        app: green
+        app: blue
     spec:
       containers:
       - name: webapp
-        image: hodong42/flask
+        image: robokingmaster/examples:colorapp
         ports:
         - containerPort: 8080
         env:
         - name: "APP_COLOR"
-          value: "green"
+          value: "blue"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-green
+  name: service-blue
+  namespace: blue-app
 spec:
   selector:
-    app: green
+    app: blue
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8080
   type: NodePort
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-green
+  name: ingress-blue
+  namespace: blue-app
   annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-spec:
-  ingressClassName: alb
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:  
   rules:
     - http:
         paths:
-        - path: /
+        - path: /blue
           pathType: Prefix
           backend:
             service:
-              name: service-green
+              name: service-blue
               port:
                 number: 80
