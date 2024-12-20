@@ -46,23 +46,36 @@ spec:
       port: 80
       targetPort: 80
   type: NodePort
-##### Provider -- kubernetesIngress #####
+
+
+##### Provider -- kubernetesCRD #####
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: nginx-ingress
+  name: nginx-ingress-route
   namespace: nginx-demo
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: traefik
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /nginx
-        pathType: Prefix
-        backend:
-          service:
-            name: nginx-service
-            port:
-              number: 80
+  tls:
+    secretName: eisdev-tls
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`*`)
+      services:
+        - kind: Service
+          name: nginx-service
+          namespace: nginx-demo
+          passHostHeader: true
+          port: 80
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              sameSite: none
+              secure: true
