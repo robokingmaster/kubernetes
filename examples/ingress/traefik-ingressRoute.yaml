@@ -1,0 +1,30 @@
+# Ingress Route Using kubernetesIngress Provider
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: app-ingress-route
+  namespace: app-ns
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: traefik
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`<hostname>`)
+      services:
+        - kind: Service
+          name: app-name
+          namespace: app-ns
+          port: 80
+          sticky:
+            cookie:
+              httpOnly: true
+              name: cookie
+              sameSite: none
+              secure: true
+  tls:
+    secretName: <tlssecretname>
