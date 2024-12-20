@@ -1,0 +1,5 @@
+.gradle
+.settings
+.project
+.vscode
+./resources/eisutils/modules/__pycache__
