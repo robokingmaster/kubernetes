@@ -8,6 +8,7 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/group.name: frontend
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:<awsaccount>:certificate/xxxx
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
