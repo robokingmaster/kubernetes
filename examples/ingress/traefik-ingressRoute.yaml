@@ -14,7 +14,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`<hostname>`)
+      match: Host(`<fqdn_hostname>`)
       services:
         - kind: Service
           name: app-name

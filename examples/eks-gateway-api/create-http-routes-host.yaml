@@ -1,0 +1,65 @@
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: redapp-go-external
+  namespace: red-app
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+      namespace: gateway-api
+  hostnames:
+  - "redapp.example.com"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /red
+      backendRefs:
+        - name: service-red
+          port: 80
+
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: greenapp-go-external
+  namespace: green-app
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+      namespace: gateway-api
+  hostnames:
+  - "greenapp.example.com"      
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /green
+      backendRefs:
+        - name: service-green
+          port: 80
+
+---
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: blueapp-go-external
+  namespace: blue-app
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: external-http
+      namespace: gateway-api
+  hostnames:
+  - "blueapp.example.com"      
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /blue
+      backendRefs:
+        - name: service-blue
+          port: 80

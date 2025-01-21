@@ -1,0 +1,137 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blue-app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-blue
+  namespace: blue-app
+spec:
+  selector:
+    matchLabels:
+      app: blue
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: blue
+    spec:
+      containers:
+      - name: webapp
+        image: robokingmaster/examples:colorapp
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "APP_COLOR"
+          value: "blue"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-blue
+  namespace: blue-app
+spec:
+  selector:
+    app: blue
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: green-app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-green
+  namespace: green-app
+spec:
+  selector:
+    matchLabels:
+      app: green
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: green
+    spec:
+      containers:
+      - name: webapp
+        image: robokingmaster/examples:colorapp
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "APP_COLOR"
+          value: "green"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-green
+  namespace: green-app
+spec:
+  selector:
+    app: green
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: red-app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-red
+  namespace: red-app
+spec:
+  selector:
+    matchLabels:
+      app: red
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: red
+    spec:
+      containers:
+      - name: webapp
+        image: robokingmaster/examples:colorapp
+        ports:
+        - containerPort: 8080
+        env:
+        - name: "APP_COLOR"
+          value: "red"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-red
+  namespace: red-app
+spec:
+  selector:
+    app: red
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: NodePort

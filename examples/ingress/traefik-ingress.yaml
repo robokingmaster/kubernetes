@@ -15,7 +15,7 @@ metadata:
     traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
 spec:
   rules:
-    - host: <hostname>
+    - host: <fqdn_hostname>
       http:
         paths:
         - path: /
