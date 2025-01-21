@@ -15,7 +15,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /red
+            value: /
       backendRefs:
         - name: service-red
           port: 80
@@ -37,7 +37,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /green
+            value: /
       backendRefs:
         - name: service-green
           port: 80
@@ -59,7 +59,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /blue
+            value: /
       backendRefs:
         - name: service-blue
           port: 80
