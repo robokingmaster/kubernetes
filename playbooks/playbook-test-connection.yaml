@@ -9,3 +9,5 @@
         msg:
           - "Host Name: {{ ansible_hostname }}"
           - "Host Name FQDN: {{ ansible_nodename }}"
+
+# ansible-playbook -i <target hostname/hostip>, playbook-test.yaml -e "@/dsk01/ritesh/config/extravars.yaml" -e 'ansible_ssh_private_key_file=<pen file>'
