@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gateway-api
+  
+---
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: gke20101-cc6778-gateway
+  namespace: gateway-api
+  annotations:
+    networking.gke.io/certmap: example-ssl-cert-map
+spec:
+  gatewayClassName: gke-l7-global-external-managed
+  listeners:
+    - name: http-listener
+      protocol: HTTP
+      port: 80
+      hostname: "*.example.net"
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All    
+    - name: https-listener
+      protocol: HTTPS
+      port: 443
+      hostname: "*.example.net"
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+        namespaces:
+          from: All                
+  addresses:
+    - type: NamedAddress
+      value: eislabs-webapps-ip
+
+# https://cloud.google.com/kubernetes-engine/docs/how-to/deploying-gateways      
