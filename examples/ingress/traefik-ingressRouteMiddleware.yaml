@@ -1,5 +1,5 @@
 # Ingress Route Using kubernetesIngress Provider With Middle ware
-# http://www.abc.com/someone => http://www.abc.com
+# http://www.example.com/someone => http://www.example.com
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware

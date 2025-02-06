@@ -10,7 +10,7 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: "eislabs-webapps-ip"
 spec:  
   rules:
-  - host: "redapp.gcpeislabs.net"
+  - host: "redapp.example.com"
     http:
       paths:
       - pathType: ImplementationSpecific

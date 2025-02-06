@@ -60,7 +60,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: redapp.abc.com
+    - host: redapp.example.com
       http:
         paths:
         - path: /

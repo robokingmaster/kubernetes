@@ -77,6 +77,6 @@ kubectl describe gcpbackendpolicy -n red-app
 
 kubectl describe httproutes redapp-route-external -n red-app
 
-curl -I https://blueapp.gcpeislabs.net
+curl -I https://blueapp.example.com
 
 ```
