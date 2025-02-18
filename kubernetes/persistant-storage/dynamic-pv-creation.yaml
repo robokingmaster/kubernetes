@@ -1,0 +1,65 @@
+---
+# Source: djangoapp/charts/postgresql/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: djangpostgresql
+  namespace: default
+  labels:
+    app: djangpostgres
+    chart: postgresql-0.1.0
+    heritage: Helm
+    release: webapp
+    user: postgres
+  annotations:
+    docker.repo.kubernetes.io/name: "parjun8840"
+    kubernetes.io/ingress.class: nginx
+    generator: helm
+    date: "20210925112940"
+spec:
+  serviceName: djangpostgresql
+  replicas: 1
+  selector:
+    matchLabels:
+      app: djangpostgres
+  template:
+    metadata:
+      labels:
+        app: djangpostgres
+        release: webapp
+    spec:
+      initContainers:
+      - name: pgsql-data-path-change
+        image: parjun8840/handyimage:v1
+        imagePullPolicy: IfNotPresent
+        command: ["sh", "-c", "if test -d /var/lib/postgresql/9.3/main; then rsync -av /var/lib/postgresql /data; sed -i 's|/var/lib/postgresql/9.3/main|/data|g' /etc/postgresql/9.3/main/postgresql.conf;mv /var/lib/postgresql/9.3/main /opt/pg_backup;fi"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data01
+      containers:
+        - name: djangpostgres
+          image: "parjun8840/postgresql:9.3"
+          imagePullPolicy: IfNotPresent
+          command: ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/data/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
+          ports:
+          - name: http
+            protocol: TCP
+            containerPort: 5432
+          volumeMounts:
+          - name: data-volume
+            mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data-volume
+      namespace: default
+    spec:
+      storageClassName: gp3
+      accessModes: 
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
+
+# kubectl apply -f dynamic-pv-creation.yaml
+# kubectl get pvc
+# kubectl get pv
